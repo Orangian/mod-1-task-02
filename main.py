@@ -12,18 +12,16 @@ def reverse_instructions(instructions):
     target = instructions[0]
     del reversed_instructions[len(instructions)-1]
     for i in range(len(instructions)-1):
-        print(i)
         if type(reversed_instructions[i][1]) is int:
             reversed_instructions[i][1] = -reversed_instructions[i][1]
     reversed_instructions.insert(0, target)
-    print(reversed_instructions)
     return reversed_instructions
 
 def main():
     test1 = ["A", ["t", 302, 20]]
     test1out = ["A", ["t", -302, 20]]
     test2 = ["Z", ["t", 302, 20], ["m", 40, 60], ["t", -30, 1], ["m", -60, 10], ["m", 2, 2]]
-    test2out = ["Z", ["t", -302, 20], ["m", -40, 60], ["t", 30, 1], ["m", 60, 10], ["m", -2, 2]]
+    test2out = ["Z", ["m", -2, 2], ["m", 60, 10], ["t", 30, 1], ["m", -40, 60], ["t", -302, 20]]
     assert reverse_instructions(test1) == test1out
     assert reverse_instructions(test2) == test2out
 
