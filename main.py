@@ -13,6 +13,7 @@ def reverse_instructions(instructions):
     if type(reversed_instructions[i]) is int:
         for i in instructions:
             reversed_instructions[i][1] = -reversed_instructions[i][1]
+    print(reversed_instructions)
     return reversed_instructions
 
 def main():
