@@ -8,11 +8,14 @@ def reverse_instructions(instructions):
 # Data format: [Robot name (str), [t (turning) or m (moving) (str), amount (int), speed (int)], Another instruction]
 # Need to find a way to go into every list & subtract angles from 360
 # Assume data has already been validated beforehand (for now)
-    reversed_instructions = reversed(instructions)
+    reversed_instructions = list(reversed(instructions))
+    target = instructions[0]
     del reversed_instructions[len(instructions)-1]
-    if type(reversed_instructions[i]) is int:
-        for i in instructions:
+    for i in range(len(instructions)-1):
+        print(i)
+        if type(reversed_instructions[i][1]) is int:
             reversed_instructions[i][1] = -reversed_instructions[i][1]
+    reversed_instructions.insert(0, target)
     print(reversed_instructions)
     return reversed_instructions
 
@@ -23,3 +26,5 @@ def main():
     test2out = ["Z", ["t", -302, 20], ["m", -40, 60], ["t", 30, 1], ["m", 60, 10], ["m", -2, 2]]
     assert reverse_instructions(test1) == test1out
     assert reverse_instructions(test2) == test2out
+
+main()
