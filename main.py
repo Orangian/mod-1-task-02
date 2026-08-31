@@ -10,11 +10,14 @@ def follow_instructions(finch_to_move, instructions):
     finch = finch_to_move
     for i in range(len(instructions)-1):
         if type(instructions[i][1]) is int:
-            if instructions[i][0] == "T":
+            if instructions[i][0] == "t":
                 #Only allows for turning rightward. Need to redo data structure to add support for turning anticlockwise.
                 finch.turn("R", instructions[i][1], instructions[i][2])
-            else:
+            elif instructions[i][0] == "m":
                 finch.move("F", instructions[i][1], instructions[i][2])
+            else:
+                print([instructions[i][0]])
+                raise ValueError("Not turning or moving")
 
 def reverse_instructions(instructions):
     """
@@ -23,8 +26,7 @@ def reverse_instructions(instructions):
              then follow reverse_instructions, you'll be back in your original position and orientation
     """
 
-# Data format: [Robot name (str), [t (turning) or m (moving) (str), amount (int), speed (int)], Another instruction]
-# Need to find a way to go into every list & subtract angles from 360
+# Data format: ((f (forward) l (left) r (right) or b (backward) (str), amount (int), speed (int)), another instruction)
 # Assume data has already been validated beforehand (for now)
     reversed_instructions = list(reversed(instructions))
     target = instructions[0]
@@ -33,12 +35,16 @@ def reverse_instructions(instructions):
         if type(reversed_instructions[i][1]) is int:
             # Check if turning, then subtract from 360
             # Finch doesn't take negative angles, but it does take negative movement values
-            if reversed_instructions[i][0] == "T":
+            if reversed_instructions[i][0] == "t":
                 reversed_instructions[i][1] = 360 - reversed_instructions[i][1]
             else:
                 reversed_instructions[i][1] = -reversed_instructions[i][1]
     reversed_instructions.insert(0, target)
     return reversed_instructions
+
+    """
+    
+    """
 
 """def main():
 """
@@ -72,7 +78,14 @@ def test_reverse_instructions():
 
 def main():
     finch = Finch("A")
-    instructions = ["vestige", ["m", 100, 100], ["t", 90, 100], ["m", 25, 100], ["m", -50, 100]]
+    instructions = [
+        "vestige",
+        ["m", 10, 5],
+        ["t", 30, 35],
+        ["m", 25, 10],
+        ["t", 360, 20],
+        ["m", -20, 15]
+    ]
     follow_instructions(finch, instructions)
     follow_instructions(finch, reverse_instructions(instructions))
 
