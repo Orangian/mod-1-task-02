@@ -63,7 +63,6 @@ def prompt_for_custom_instructions():
     raise NotImplementedError()
 
 def test_reverse_instructions():
-    finch = Finch("A")
     test1 = ["A", ["t", 302, 20]]
     test1out = ["A", ["t", -302, 20]]
     test2 = ["Z", ["t", 302, 20], ["m", 40, 60], ["t", -30, 1], ["m", -60, 10], ["m", 2, 2]]
