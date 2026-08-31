@@ -62,8 +62,7 @@ def prompt_for_custom_instructions():
     """
     raise NotImplementedError()
 
-def main():
-
+def test_reverse_instructions():
     finch = Finch("A")
     test1 = ["A", ["t", 302, 20]]
     test1out = ["A", ["t", -302, 20]]
@@ -71,6 +70,9 @@ def main():
     test2out = ["Z", ["m", -2, 2], ["m", 60, 10], ["t", 30, 1], ["m", -40, 60], ["t", -302, 20]]
     assert reverse_instructions(test1) == test1out
     assert reverse_instructions(test2) == test2out
+
+def main():
+    finch = Finch("A")
     instructions = ["vestige", ["m", 100, 100], ["t", 90, 100], ["m", 25, 100], ["m", -50, 100]]
     follow_instructions(finch, instructions)
     follow_instructions(finch, reverse_instructions(instructions))
