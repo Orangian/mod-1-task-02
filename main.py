@@ -9,11 +9,15 @@ def follow_instructions(finch_to_move, instructions):
     #Didn't want to redo my code to get rid of vestigial target finch string, so not using it for now
     finch = finch_to_move
     for i in range(len(instructions)-1):
+        print(i)
+        print(instructions[i][0])
         if type(instructions[i][1]) is int:
             if instructions[i][0] == "t":
                 #Only allows for turning rightward. Need to redo data structure to add support for turning anticlockwise.
+                print("R", instructions[i][1], instructions[i][2])
                 finch.turn("R", instructions[i][1], instructions[i][2])
             elif instructions[i][0] == "m":
+                print("F", instructions[i][1], instructions[i][2])
                 finch.move("F", instructions[i][1], instructions[i][2])
             else:
                 print([instructions[i][0]])
@@ -76,9 +80,20 @@ def test_reverse_instructions():
     assert reverse_instructions(test1) == test1out
     assert reverse_instructions(test2) == test2out
 
+def generate_polygon_instructions(num_sides,distance,speed):
+    angle = 360 / num_sides
+    temporary_instruction_list = ["ABBA"]
+    for i in range(num_sides):
+        temporary_instruction_list.append(("m", distance, speed))
+        temporary_instruction_list.append(("t", angle, speed))
+        print(temporary_instruction_list)
+        print(tuple(temporary_instruction_list))
+
+    return tuple(temporary_instruction_list)
+
 def main():
     finch = Finch("A")
-    instructions = [
+    """instructions = [
         "vestige",
         ["m", 10, 5],
         ["t", 30, 35],
@@ -87,7 +102,11 @@ def main():
         ["m", -20, 15]
     ]
     follow_instructions(finch, instructions)
-    follow_instructions(finch, reverse_instructions(instructions))
+    follow_instructions(finch, reverse_instructions(instructions))"""
+    num_sides=4
+    distance=10
+    speed=25
+    follow_instructions(finch, generate_polygon_instructions(num_sides, distance, speed))
 
 if __name__ == "__main__":
     main()
