@@ -1,4 +1,5 @@
 from robot.finch import Finch
+import pytest
 
 def follow_instructions(finch_to_move, instructions):
     """
@@ -80,7 +81,7 @@ def test_reverse_instructions():
     assert reverse_instructions(test1) == test1out
     assert reverse_instructions(test2) == test2out
 
-def generate_polygon_instructions(num_sides,distance,speed):
+def generate_polygon_instructions(num_sides,distance=5,speed=5):
     angle = 360 / num_sides
     temporary_instruction_list = ["ABBA"]
     for i in range(num_sides):
@@ -91,8 +92,56 @@ def generate_polygon_instructions(num_sides,distance,speed):
 
     return tuple(temporary_instruction_list)
 
+def is_instruction_valid(instruction):
+    #Valid: ("m" or "t" (str), int, int)
+    if type(instruction[0] == str):
+        if instruction[0] == "t" or "m":
+            if type(instruction[1] == int) and type(instruction[2] == int):
+                print(instruction[2])
+                if instruction[2] >= 0:
+                    if instruction[0] == "t":
+                        if instruction[1] >= 0:
+                            return True
+                        else:
+                            raise(ValueError("Turn angle must be positive"))
+                    else:
+                        return True
+                else:
+                    raise(ValueError("Speed must be positive"))
+            else:
+                raise(ValueError("Second & third entries must be int"))
+        else:
+            raise(ValueError("First entry must be either t or m"))
+    else:
+        raise(ValueError("First entry must be a str"))
+
+def test_is_instruction_valid():
+    valid_turn = ("t", 50, 50)
+    valid_move = ("m", 50, 50)
+    negative_turn_angle = ("t", -20, 50)
+    negative_move_angle = ("m", -20, 50)
+    assert is_instruction_valid(valid_turn) == True
+    assert is_instruction_valid(valid_move) == True
+    assert is_instruction_valid(negative_move_angle) == True
+    with pytest.raises(ValueError):
+        is_instruction_valid(negative_turn_angle)
+
+def test_are_instructions_valid():
+    valid_instructions = ("M", ("t", 50, 50), ("m", 50, 50), ("t", 50, 50), ("m", 50, 50), ("t", 50, 50))
+    negative_turn_angle = ("M", ("t", 50, 50), ("m", 50, 50), ("t", -50, 50), ("m", 50, 50), ("t", 50, 50))
+    assert are_instructions_valid(valid_instructions) == True
+    with pytest.raises(ValueError):
+        are_instructions_valid(negative_turn_angle)
+
+def are_instructions_valid(instructions):
+    instruction_list = list(instructions)
+    del instruction_list[0]
+    for i in range(len(instruction_list)):
+        is_instruction_valid(instruction_list[i])
+    return True
+
 def main():
-    finch = Finch("A")
+    #finch = Finch("A")
     """instructions = [
         "vestige",
         ["m", 10, 5],
@@ -106,7 +155,7 @@ def main():
     num_sides=4
     distance=10
     speed=25
-    follow_instructions(finch, generate_polygon_instructions(num_sides, distance, speed))
+    #follow_instructions(finch, generate_polygon_instructions(num_sides, distance, speed))
 
 if __name__ == "__main__":
     main()
